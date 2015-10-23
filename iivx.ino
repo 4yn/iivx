@@ -7,7 +7,7 @@
  * 
  */
 
-char keys[] = {'0','1','2','3','4','5','6','7','8','9'};
+iivxReport_t report;
 
 void setup() {
   Serial.begin(9600);
@@ -18,8 +18,6 @@ void setup() {
     digitalWrite(i+1,HIGH);
   }
   Serial.println("Begin HID");
-  Iivx.begin();
-  //Keyboard.begin();
 }
 
 void loop() {
@@ -30,15 +28,18 @@ void loop() {
        digitalWrite(i,HIGH);
        //Keyboard.press(keys[i/2-11]);
        if(i==22){
-        Iivx.buttons((uint16_t)3);
+        //iivx.buttons((uint16_t)3);
+        report.buttons = 1;
        }
     } else {
       digitalWrite(i,LOW);
       //Keyboard.release(keys[i/2-11]);
       if(i==22){
-        Iivx.buttons((uint16_t)3);
+        //iivx.buttons((uint16_t)3);
+        report.buttons = 0;
       }
     }
   }
+  iivx.setState(&report);
 }
 
