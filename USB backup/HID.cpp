@@ -15,7 +15,6 @@
 */
 
 #include "Arduino.h"
-#include "USB/USBAPI.h"
 
 #ifdef HID_ENABLED
 
@@ -23,17 +22,9 @@
 
 //	Singletons for mouse and keyboard
 
-//#define ORG_HID
-#define NEW_HID
-
-#ifdef ORG_HID
 Mouse_ Mouse;
 Keyboard_ Keyboard;
-#endif
 
-#ifdef NEW_HID
-Iivx_ Iivx;
-#endif
 //================================================================================
 //================================================================================
 
@@ -48,8 +39,6 @@ Iivx_ Iivx;
 #define RAWHID_RX_SIZE 64
 
 extern const uint8_t _hidReportDescriptor[] = {
-
-#ifdef ORG_HID
 	//	Mouse
     0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)	// 54
     0x09, 0x02,                    // USAGE (Mouse)
@@ -109,162 +98,6 @@ extern const uint8_t _hidReportDescriptor[] = {
     0x29, 0x65,                    //   USAGE_MAXIMUM (Keyboard Application)
     0x81, 0x00,                    //   INPUT (Data,Ary,Abs)
     0xc0,                          // END_COLLECTION
-
-#endif
-
-#ifdef NEW_HID
-    //begin iivx descriptor
-
-	/*Header */ 
-    0x05, 0x01,                    /* USAGE_PAGE (Generic Desktop) */ 
-    0x09, 0x05,                    /* USAGE (Game Pad) */ 
-    0xa1, 0x01,                    /* COLLECTION (Application) */ 
-    0x85, 0x04,				 /*   REPORT_ID */ 
-    /*Buttons */ 
-    0x05, 0x09,                    /*     USAGE_PAGE (Button) */ 
-    0x19, 0x01,                    /*     USAGE_MINIMUM (Button 1) */ 
-    0x29, 0x0f,                    /*     USAGE_MAXIMUM (Button 16) changed to 15*/ 
-    0x15, 0x00,                    /*     LOGICAL_MINIMUM (0) */ 
-    0x25, 0x01,                    /*     LOGICAL_MAXIMUM (1) */ 
-    0x95, 0x0f,                    /*     REPORT_COUNT (16)  changed to 15*/ 
-    0x75, 0x01,                    /*     REPORT_SIZE (1) */ 
-    0x81, 0x02,                    /*     INPUT (Data,Var,Abs) */ 
-    /* Reserved byte */ 
-    0x95, 0x01,                      /*   REPORT_COUNT (1) */ 
-    0x75, 0x01,                      /*   REPORT_SIZE (8) */ 
-    0x81, 0x03,                      /*   INPUT (Cnst,Var,Abs) */ 
-    /*Axis */ 
-    0x05, 0x01,                    /*     USAGE_PAGE (Generic Desktop) */ 
-    0x09, 0x30,                    /*     USAGE (X) */ 
-    0x09, 0x31,                    /*     USAGE (Y) */ 
-    0x09, 0x32,                    /*     USAGE (Z) */ 
-    0x15, 0x81,                    /*     LOGICAL_MINIMUM (-127) */ 
-    0x25, 0x7f,                    /*     LOGICAL_MAXIMUM (127) */ 
-    0x95, 0x03,                    /*     REPORT_COUNT (3) */ 
-    0x75, 0x08,                    /*     REPORT_SIZE (8) */ 
-    0x81, 0x02,                    /*     INPUT (Data,Var,Abs) */ 
-	// /*Lights config*/ 
- //    0x85, 0x05,				 /*   REPORT_ID set to 2*/ 
- //    0x15, 0x00,                    /*     LOGICAL_MINIMUM (0) */ 
- //    0x25, 0x01,                    /*     LOGICAL_MAXIMUM (1) */ 
- //    /*Led 1 */ 
- //    0x05, 0x0a,                    /*     USAGE_PAGE (Ordinals) */ 
- //    0x09, 0x01,                    /*     USAGE (Instance 1) */ 
- //    0xa1, 0x02,                    /*     COLLECTION (Logical) */ 
- //    0x05, 0x08,                    /*       USAGE_PAGE (LEDs) */ 
- //    0x09, 0x4b,                    /*       USAGE (Generic Indicator 1) */ 
- //    0x75, 0x01,                    /*       REPORT_SIZE (1) */ 
- //    0x95, 0x01,                    /*       REPORT_COUNT (1) */ 
- //    0x91, 0x02,                    /*       OUTPUT (Data,Var,Abs) */ 
- //    0xc0,                          /*     END_COLLECTION */ 
- //    /*Led 2 */ 
- //    0x05, 0x0a,                    /*     USAGE_PAGE (Ordinals) */ 
- //    0x09, 0x02,                    /*     USAGE (Instance 2) */ 
- //    0xa1, 0x02,                    /*     COLLECTION (Logical) */ 
- //    0x05, 0x08,                    /*       USAGE_PAGE (LEDs) */ 
- //    0x09, 0x4b,                    /*       USAGE (Generic Indicator 1) */ 
- //    0x75, 0x01,                    /*       REPORT_SIZE (1) */ 
- //    0x95, 0x01,                    /*       REPORT_COUNT (1) */ 
- //    0x91, 0x02,                    /*       OUTPUT (Data,Var,Abs) */ 
- //    0xc0,                          /*     END_COLLECTION */ 
- //    /*Led 3 */ 
- //    0x05, 0x0a,                    /*     USAGE_PAGE (Ordinals) */ 
- //    0x09, 0x03,                    /*     USAGE (Instance 3) */ 
- //    0xa1, 0x02,                    /*     COLLECTION (Logical) */ 
- //    0x05, 0x08,                    /*       USAGE_PAGE (LEDs) */ 
- //    0x09, 0x4b,                    /*       USAGE (Generic Indicator 1) */ 
- //    0x75, 0x01,                    /*       REPORT_SIZE (1) */ 
- //    0x95, 0x01,                    /*       REPORT_COUNT (1) */ 
- //    0x91, 0x02,                    /*       OUTPUT (Data,Var,Abs) */ 
- //    0xc0,                          /*     END_COLLECTION */ 
- //    /*Led 4 */ 
- //    0x05, 0x0a,                    /*     USAGE_PAGE (Ordinals) */ 
- //    0x09, 0x04,                    /*     USAGE (Instance 4) */ 
- //    0xa1, 0x02,                    /*     COLLECTION (Logical) */ 
- //    0x05, 0x08,                    /*       USAGE_PAGE (LEDs) */ 
- //    0x09, 0x4b,                    /*       USAGE (Generic Indicator 1) */ 
- //    0x75, 0x01,                    /*       REPORT_SIZE (1) */ 
- //    0x95, 0x01,                    /*       REPORT_COUNT (1) */ 
- //    0x91, 0x02,                    /*       OUTPUT (Data,Var,Abs) */ 
- //    0xc0,                          /*     END_COLLECTION */ 
- //    /*Led 5 */ 
- //    0x05, 0x0a,                    /*     USAGE_PAGE (Ordinals) */ 
- //    0x09, 0x05,                    /*     USAGE (Instance 5) */ 
- //    0xa1, 0x02,                    /*     COLLECTION (Logical) */ 
- //    0x05, 0x08,                    /*       USAGE_PAGE (LEDs) */ 
- //    0x09, 0x4b,                    /*       USAGE (Generic Indicator 1) */ 
- //    0x75, 0x01,                    /*       REPORT_SIZE (1) */ 
- //    0x95, 0x01,                    /*       REPORT_COUNT (1) */ 
- //    0x91, 0x02,                    /*       OUTPUT (Data,Var,Abs) */ 
- //    0xc0,                          /*     END_COLLECTION */ 
- //    /*Led 6 */ 
- //    0x05, 0x0a,                    /*     USAGE_PAGE (Ordinals) */ 
- //    0x09, 0x06,                    /*     USAGE (Instance 6) */ 
- //    0xa1, 0x02,                    /*     COLLECTION (Logical) */ 
- //    0x05, 0x08,                    /*       USAGE_PAGE (LEDs) */ 
- //    0x09, 0x4b,                    /*       USAGE (Generic Indicator 1) */ 
- //    0x75, 0x01,                    /*       REPORT_SIZE (1) */ 
- //    0x95, 0x01,                    /*       REPORT_COUNT (1) */ 
- //    0x91, 0x02,                    /*       OUTPUT (Data,Var,Abs) */ 
- //    0xc0,                          /*     END_COLLECTION */ 
- //    /*Led 7 */ 
- //    0x05, 0x0a,                    /*     USAGE_PAGE (Ordinals) */ 
- //    0x09, 0x07,                    /*     USAGE (Instance 7) */ 
- //    0xa1, 0x02,                    /*     COLLECTION (Logical) */ 
- //    0x05, 0x08,                    /*       USAGE_PAGE (LEDs) */ 
- //    0x09, 0x4b,                    /*       USAGE (Generic Indicator 1) */ 
- //    0x75, 0x01,                    /*       REPORT_SIZE (1) */ 
- //    0x95, 0x01,                    /*       REPORT_COUNT (1) */ 
- //    0x91, 0x02,                    /*       OUTPUT (Data,Var,Abs) */ 
- //    0xc0,                          /*     END_COLLECTION */ 
- //    /*Led 8 */ 
- //    0x05, 0x0a,                    /*     USAGE_PAGE (Ordinals) */ 
- //    0x09, 0x08,                    /*     USAGE (Instance 8) */ 
- //    0xa1, 0x02,                    /*     COLLECTION (Logical) */ 
- //    0x05, 0x08,                    /*       USAGE_PAGE (LEDs) */ 
- //    0x09, 0x4b,                    /*       USAGE (Generic Indicator 1) */ 
- //    0x75, 0x01,                    /*       REPORT_SIZE (1) */ 
- //    0x95, 0x01,                    /*       REPORT_COUNT (1) */ 
- //    0x91, 0x02,                    /*       OUTPUT (Data,Var,Abs) */ 
- //    0xc0,                          /*     END_COLLECTION */ 
- //    /*Led 9 */ 
- //    0x05, 0x0a,                    /*     USAGE_PAGE (Ordinals) */ 
- //    0x09, 0x09,                    /*     USAGE (Instance 9) */ 
- //    0xa1, 0x02,                    /*     COLLECTION (Logical) */ 
- //    0x05, 0x08,                    /*       USAGE_PAGE (LEDs) */ 
- //    0x09, 0x4b,                    /*       USAGE (Generic Indicator 1) */ 
- //    0x75, 0x01,                    /*       REPORT_SIZE (1) */ 
- //    0x95, 0x01,                    /*       REPORT_COUNT (1) */ 
- //    0x91, 0x02,                    /*       OUTPUT (Data,Var,Abs) */ 
- //    0xc0,                          /*     END_COLLECTION */ 
- //    /*Led 10 */ 
- //    0x05, 0x0a,                    /*     USAGE_PAGE (Ordinals) */ 
- //    0x09, 0x0a,                    /*     USAGE (Instance 10) */ 
- //    0xa1, 0x02,                    /*     COLLECTION (Logical) */ 
- //    0x05, 0x08,                    /*       USAGE_PAGE (LEDs) */ 
- //    0x09, 0x4b,                    /*       USAGE (Generic Indicator 1) */ 
- //    0x75, 0x01,                    /*       REPORT_SIZE (1) */ 
- //    0x95, 0x01,                    /*       REPORT_COUNT (1) */ 
- //    0x91, 0x02,                    /*       OUTPUT (Data,Var,Abs) */ 
- //    0xc0,                          /*     END_COLLECTION */ 
- //    /*Led 11 */ 
- //    0x05, 0x0a,                    /*     USAGE_PAGE (Ordinals) */ 
- //    0x09, 0x0b,                    /*     USAGE (Instance 11) */ 
- //    0xa1, 0x02,                    /*     COLLECTION (Logical) */ 
- //    0x05, 0x08,                    /*       USAGE_PAGE (LEDs) */ 
- //    0x09, 0x4b,                    /*       USAGE (Generic Indicator 1) */ 
- //    0x75, 0x01,                    /*       REPORT_SIZE (1) */ 
- //    0x95, 0x01,                    /*       REPORT_COUNT (1) */ 
- //    0x91, 0x02,                    /*       OUTPUT (Data,Var,Abs) */ 
- //    0xc0,                          /*     END_COLLECTION */ 
- //  	/*  Reserved 5 bits */ 
- //  	0x95, 0x01,						 /*   REPORT_COUNT (1) */ 
- //  	0x75, 0x05,						 /*   REPORT_SIZE (5) */ 
- //  	0x91, 0x03,						 /*   OUTPUT (Cnst,Var,Abs) */ 
-    /*Footer */ 
-    0xc0                          /* END_COLLECTION */ 
-
-#endif // NEW_HID_1
 
 #ifdef RAWHID_ENABLED
 	//	RAW HID
@@ -367,8 +200,6 @@ bool WEAK HID_Setup(Setup& setup)
 //================================================================================
 //================================================================================
 //	Mouse
-
-#ifdef ORG_HID
 
 Mouse_::Mouse_(void) : _buttons(0)
 {
@@ -683,41 +514,5 @@ size_t Keyboard_::write(uint8_t c)
 
 	return (p);		// Just return the result of press() since release() almost always returns 1
 }
-
-#endif //ifdef ORG_HID
-
-#ifdef NEW_HID
-
-//blank init
-inline Iivx_::Iivx_(void){};
-
-//blank begin and end
-inline void Iivx_::begin(void){};
-inline void Iivx_::end(void){};
-
-//set data
-inline void Iivx_::buttons(uint16_t b){
-	_report.buttons = b;
-	sendReport(&_report);
-};
-inline void Iivx_::xAxis(int8_t x){
-	_report.xAxis = x;
-	sendReport(&_report);
-};
-inline void Iivx_::yAxis(int8_t y){
-	_report.yAxis = y;
-	sendReport(&_report);
-};
-inline void Iivx_::zAxis(int8_t z){
-	_report.zAxis = z;
-	sendReport(&_report);
-};
-
-//send data
-void Iivx_::sendReport(IivxReportType* data){
-	HID_SendReport(4,data,sizeof(IivxReportType));
-};
-
-#endif //NEW_HID_1
 
 #endif

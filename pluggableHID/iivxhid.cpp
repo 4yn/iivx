@@ -179,7 +179,7 @@ size_t iivx_::zAxis(int8_t z){
 
 //send data
 void iivx_::sendReport(iivxReportType* data){
-	HID().sendReport(1,data,sizeof(iivxReportType));
+	//HID().sendReport(1,data,sizeof(iivxReportType));
 };
 
 //read data

@@ -23,9 +23,6 @@
 
 #include "RingBuffer.h"
 
-//#define ORG_HID
-#define NEW_HID
-
 //================================================================================
 //================================================================================
 //	USB
@@ -70,8 +67,6 @@ extern Serial_ SerialUSB;
 //================================================================================
 //================================================================================
 //	Mouse
-
-#ifdef ORG_HID
 
 #define MOUSE_LEFT 1
 #define MOUSE_RIGHT 2
@@ -159,40 +154,6 @@ public:
 	virtual void releaseAll(void);
 };
 extern Keyboard_ Keyboard;
-
-#endif //ifdef ORG_HID
-
-//================================================================================
-//================================================================================
-//	IIVX
-
-#ifdef NEW_HID
-
-typedef struct{
-	uint16_t buttons;
-	int8_t xAxis;
-	int8_t yAxis;
-	int8_t zAxis;
-} IivxReportType;
-
-class Iivx_{
-public:
-	inline Iivx_(void);
-	inline void begin(void);
-	inline void end(void);
-	inline void buttons(uint16_t b);
-	inline void xAxis(int8_t x);
-	inline void yAxis(int8_t y);
-	inline void zAxis(int8_t z);
-	inline uint8_t ledLow(void);
-	inline uint8_t ledHigh(void);
-private:
-	void sendReport(IivxReportType* data);
-	IivxReportType _report;
-};
-extern Iivx_ Iivx;
-
-#endif //NEW_HID
 
 //================================================================================
 //================================================================================
