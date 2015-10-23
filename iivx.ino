@@ -7,8 +7,8 @@
  * 
  */
 
-//iivxReport_t report;
-JoyState_t report;
+iivxReport_t report;
+//JoyState_t report;
 
 void setup() {
   Serial.begin(9600);
@@ -41,7 +41,7 @@ void loop() {
       }
     }
   }
-  //iivx.setState(&report);
-  Joystick.setState(&report);
+  iivx.setState(&report);
+  //Joystick.setState(&report);
 }
 

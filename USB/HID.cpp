@@ -19,7 +19,7 @@
 #ifdef HID_ENABLED
 
 //#define RAWHID_ENABLED
-#define OLD_HID
+//#define OLD_HID
 //	Singletons for mouse and keyboard
 
 #ifdef OLD_HID
@@ -151,7 +151,7 @@ extern const uint8_t _hidReportDescriptor[] = {
     0x09, 0x32,                    /*     USAGE (Z) */ 
     0x15, 0x81,                    /*     LOGICAL_MINIMUM (-127) */ 
     0x25, 0x7f,                    /*     LOGICAL_MAXIMUM (127) */ 
-    0x95, 0x02,                    /*     REPORT_COUNT (3) */ 
+    0x95, 0x03,                    /*     REPORT_COUNT (3) */ 
     0x75, 0x08,                    /*     REPORT_SIZE (8) */ 
     0x81, 0x02,                    /*     INPUT (Data,Var,Abs) */ 
     /*Footer */ 
