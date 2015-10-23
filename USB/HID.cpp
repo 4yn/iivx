@@ -19,11 +19,13 @@
 #ifdef HID_ENABLED
 
 //#define RAWHID_ENABLED
-
+#define OLD_HID
 //	Singletons for mouse and keyboard
 
+#ifdef OLD_HID
 Mouse_ Mouse;
 Keyboard_ Keyboard;
+#endif //OLD_HID
 
 //================================================================================
 //================================================================================
@@ -39,6 +41,8 @@ Keyboard_ Keyboard;
 #define RAWHID_RX_SIZE 64
 
 extern const uint8_t _hidReportDescriptor[] = {
+
+#ifdef OLD_HID
 	//	Mouse
     0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)	// 54
     0x09, 0x02,                    // USAGE (Mouse)
@@ -98,6 +102,8 @@ extern const uint8_t _hidReportDescriptor[] = {
     0x29, 0x65,                    //   USAGE_MAXIMUM (Keyboard Application)
     0x81, 0x00,                    //   INPUT (Data,Ary,Abs)
     0xc0,                          // END_COLLECTION
+
+#endif //OLD_HID
 
 #ifdef RAWHID_ENABLED
 	//	RAW HID
@@ -233,6 +239,8 @@ bool WEAK HID_Setup(Setup& setup)
 //================================================================================
 //	Mouse
 
+#ifdef OLD_HID
+
 Mouse_::Mouse_(void) : _buttons(0)
 {
 }
@@ -289,6 +297,8 @@ bool Mouse_::isPressed(uint8_t b)
 	return false;
 }
 
+#endif
+
 //================================================================================
 //================================================================================
 //	IIVX
@@ -320,6 +330,8 @@ void iivx_::setState(iivxReport_t *report)
 //================================================================================
 //================================================================================
 //	Keyboard
+
+#ifdef OLD_HID
 
 Keyboard_::Keyboard_(void)
 {
@@ -574,5 +586,7 @@ size_t Keyboard_::write(uint8_t c)
 
 	return (p);		// Just return the result of press() since release() almost always returns 1
 }
+
+#endif //OLD_HID
 
 #endif
