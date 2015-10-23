@@ -27,6 +27,8 @@ Mouse_ Mouse;
 Keyboard_ Keyboard;
 #endif //OLD_HID
 
+
+
 //================================================================================
 //================================================================================
 
@@ -296,6 +298,9 @@ _Pragma("pack()")
 uint8_t _hid_protocol = 1;
 uint8_t _hid_idle = 1;
 
+// IIVX LED
+volatile uint16_t iivx_led = 0;
+
 #define WEAK __attribute__ ((weak))
 
 int WEAK HID_GetInterface(uint8_t* interfaceNum)
@@ -351,6 +356,22 @@ bool WEAK HID_Setup(Setup& setup)
 		{
 			_hid_idle = setup.wValueL;
 			return true;
+		}
+
+		// HID LEDs
+
+		if (HID_SET_REPORT == r)
+		{
+			if (setup.wLength == 3)
+			{
+				// write led out report data
+				uint8_t data[3];
+				if (3 == USBD_RecvControl(data, 3)){
+					iivx_led = (uint16_t) (data[2] << 8) + data[1];
+					//iivx_led = data[1];
+				}
+				return true;
+			}
 		}
 	}
 	return false;
@@ -447,6 +468,11 @@ void iivx_::setState(iivxReport_t *report)
 	//HID_SendReport(Report number, array of values in same order as HID descriptor, length)
 	HID_SendReport(4, data, iivxByte);
 }
+
+// inline uint16_t iivx_::readState()
+// {
+// 	return iivx_led;
+// }
 
 //================================================================================
 //================================================================================

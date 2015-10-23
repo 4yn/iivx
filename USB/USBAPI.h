@@ -94,6 +94,8 @@ extern Mouse_ Mouse;
 //================================================================================
 //	IIVX
 
+extern volatile uint16_t iivx_led;
+
 typedef struct iivxReport 		// Pretty self explanitory. Simple state to store all the joystick parameters
 {
 	uint16_t 	buttons;
@@ -107,6 +109,7 @@ class iivx_
 public:
 	iivx_();
 	void setState(iivxReport_t *report);
+	inline uint16_t readState(){ return iivx_led; };
 };
 extern iivx_ iivx;
 
