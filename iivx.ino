@@ -2,16 +2,20 @@
  * IIVX
  *  
  * Beatmania IIDX + Sound Voltex hybrid controller
- * 9 buttons, 2 knobs + 1 turntable
+ * 9 buttons, 2 knobs, 1 turntable (forward + backward movement mapped to buttons 10 and 11)
  * Using Arduino Due
+ * 
+ * Use "Slider" mode in KSM for knobs to work
  * 
  */
 
-#define REPORT_DELAY 25000 // Microseconds to wait between reports, 0 delay gives 4000 reports a second, 2000 gives 250 reports a second
-#define LIGHTING_MODE 2 // 0 = Disable LED, 1 = Reactive Lighting, 2 = HID led
-#define DEBUG_ENABLE 1 // 0 = Disable serial debug, 1 = Enable, 2 = Verbose Output
 
-//Button Pins
+// Microseconds to wait between loops: 0 delay gives 4000 reports a second, 2000 gives 250 reports a second
+#define REPORT_DELAY 2000 
+// Toggle debug mode: 0 = Disable serial debug, 1 = Enable, 2 = Verbose Output
+#define DEBUG_ENABLE 1
+
+// Button Pins
 uint8_t buttonCount = 9; //Maximum 15
 uint8_t buttonPins[] = {23,25,27,29,31,33,35,37,39}; // Array of buttons
 uint8_t ledPins[] = {22,24,26,28,30,32,34,36,38}; // Array of LEDs
@@ -20,27 +24,27 @@ uint8_t ledPins[] = {22,24,26,28,30,32,34,36,38}; // Array of LEDs
 // All encoder pins are set on the DUE's C port
 // Pin mapping is used to speed up encoder processing, especially for high-performance encoders
 // Why did I get the 600 p/r ones
+#define ENCODER_SENSITIVITY (double) 2.34375 // I'm using 600 ppr encoders at 1x resolution while HID reports 256 data points per rotation, 600/256 = 2.34375
+
 #define ENCODER_PINPORT PIOC
 #define ENCODER_X_A 46
 #define ENCODER_X_B 47
 #define ENCODER_X_B_REGISTER 16
 #define ENCODER_Y_A 48
-#define ENCODER_Y_B 48
+#define ENCODER_Y_B 49
 #define ENCODER_Y_B_REGISTER 14
 #define ENCODER_Z_A 50
-#define ENCODER_Z_B 49
+#define ENCODER_Z_B 51
 #define ENCODER_Z_B_REGISTER 12
 
-// Encoder Variables
-volatile int16_t encX = 0, encY = 0, encZ = 0;
-
-// System Variables 
+// System Variables
+uint8_t lighting = 0; // Storage for current lighting mode: 0: Lights off, 1: Reactive Lights, 2: HID Lights Press buttons 2, 6, 8 and 9 to enable set, then press 1 for off, 3 for reactive and 5 for HID lights
 iivxReport_t report; // Storage for button and knob states
-iivxReport_t lastReport;
 uint16_t hidLed; // Storage for HID led state
+volatile int32_t encX = 0, encY = 0, encZ = 0, encZlast = 0;; // Storage for encoder states
 
-//Encoder Processing
-
+// Encoder Processing
+// Using direct port reading due to large overhead of digitalRead, speeds up especially in case of high resolution encoders
 void encXProc(){
   if(bitRead(ENCODER_PINPORT -> PIO_PDSR,ENCODER_X_B_REGISTER)){
     encX -= 1;
@@ -63,7 +67,16 @@ void encZProc(){
   }
 }
 
-
+// Lighting Processing
+void lights(uint16_t l){
+  for(int i=0;i<buttonCount;i++){
+     if(bitRead(l,i)){
+         digitalWrite(ledPins[i],HIGH);
+     } else {
+         digitalWrite(ledPins[i],LOW);
+     }
+   }
+}
 
 void setup() {
 
@@ -102,6 +115,9 @@ void setup() {
   attachInterrupt(ENCODER_X_A,encXProc,RISING);
   attachInterrupt(ENCODER_Y_A,encYProc,RISING);
   attachInterrupt(ENCODER_Z_A,encZProc,RISING);
+
+  // Reset Lights
+  lights(0);
   
 }
 
@@ -120,37 +136,50 @@ void loop() {
   }
 
   // Read Encoders
-  //if(DEBUG_ENABLE) SerialUSB.println( (int) encX);
+  report.xAxis = (uint8_t)((int32_t)(encX / ENCODER_SENSITIVITY) % 256);
+  report.yAxis = (uint8_t)((int32_t)(encY / ENCODER_SENSITIVITY) % 256);
+  report.zAxis = (uint8_t)((int32_t)(encZ / ENCODER_SENSITIVITY) % 256);
 
-  // Read HID Led
-  hidLed = iivx.readState();
-  //if(DEBUG_ENABLE) SerialUSB.println( (int) hidLed);
+  // Read turntable buttons
+  if( (int32_t)(encZ / ENCODER_SENSITIVITY) - encZlast > 0) {
+    report.buttons |= (uint16_t)1 << 9;
+    report.buttons &= ~((uint16_t)1 << 10);
+    encZlast = (encZ / ENCODER_SENSITIVITY);
+  } else if ( (int32_t)(encX / ENCODER_SENSITIVITY) - encZlast < 0){
+    report.buttons |= (uint16_t)1 << 10;
+    report.buttons &= ~((uint16_t)1 << 9);
+    encZlast = (encZ / ENCODER_SENSITIVITY);
+  } else {
+    report.buttons &= ~((uint16_t)1 << 9);
+    report.buttons &= ~((uint16_t)1 << 10);
+  }
+  
+  if(DEBUG_ENABLE) SerialUSB.println(encZlast);
+  if(DEBUG_ENABLE) SerialUSB.println(report.xAxis);
 
   // Write LED states
-  if(LIGHTING_MODE){
-    for(int i=0;i<buttonCount;i++){
-      if(LIGHTING_MODE==1){ // Reactive Lighting
-         if(bitRead(report.buttons,i)){
-           digitalWrite(ledPins[i],HIGH);
-         } else {
-           digitalWrite(ledPins[i],LOW);
-         }
-      } else if (LIGHTING_MODE==2){ // HID Lighting
-        if(bitRead(hidLed,i)){
-           digitalWrite(ledPins[i],HIGH);
-         } else {
-           digitalWrite(ledPins[i],LOW);
-         }
-      }
+  if(lighting){
+    if(lighting==1){
+      lights(report.buttons);
+    } else if (lighting==2){
+      hidLed = iivx.readState();
+      lights(hidLed);
     }
+  }
+
+  // Check if setting lighting mode
+  if(report.buttons==419){
+    lighting = 0;
+    lights(0);
+  } else if (report.buttons==422){
+    lighting =  1;
+  } else if (report.buttons==434){
+    lighting = 2;
   }
 
   // Wrap-up
 
-  if(report!=lastReport){
-    iivx.setState(&report); // Send data only if data has changed
-    lastReport = report;
-  }
+  iivx.setState(&report);
   
   delayMicroseconds(REPORT_DELAY); // Delay to reduce report rate
 }
