@@ -9,11 +9,10 @@
  * 
  */
 
-
 // Microseconds to wait between loops: 0 delay gives 4000 reports a second, 2000 gives 250 reports a second
 #define REPORT_DELAY 2000 
 // Toggle debug mode: 0 = Disable serial debug, 1 = Enable, 2 = Verbose Output
-#define DEBUG_ENABLE 1
+#define DEBUG_ENABLE 0
 
 // Button Pins
 uint8_t buttonCount = 9; //Maximum 15
@@ -25,7 +24,6 @@ uint8_t ledPins[] = {22,24,26,28,30,32,34,36,38}; // Array of LEDs
 // Pin mapping is used to speed up encoder processing, especially for high-performance encoders
 // Why did I get the 600 p/r ones
 #define ENCODER_SENSITIVITY (double) 2.34375 // I'm using 600 ppr encoders at 1x resolution while HID reports 256 data points per rotation, 600/256 = 2.34375
-
 #define ENCODER_PINPORT PIOC
 #define ENCODER_X_A 46
 #define ENCODER_X_B 47
@@ -36,12 +34,13 @@ uint8_t ledPins[] = {22,24,26,28,30,32,34,36,38}; // Array of LEDs
 #define ENCODER_Z_A 50
 #define ENCODER_Z_B 51
 #define ENCODER_Z_B_REGISTER 12
+#define ENCODER_Z_MILLIS_TOLERANCE 100 // Amount of miliseconds to wait and change state of turntable buttons
 
 // System Variables
 uint8_t lighting = 0; // Storage for current lighting mode: 0: Lights off, 1: Reactive Lights, 2: HID Lights Press buttons 2, 6, 8 and 9 to enable set, then press 1 for off, 3 for reactive and 5 for HID lights
 iivxReport_t report; // Storage for button and knob states
 uint16_t hidLed; // Storage for HID led state
-volatile int32_t encX = 0, encY = 0, encZ = 0, encZlast = 0;; // Storage for encoder states
+volatile int32_t encX = 0, encY = 0, encZ = 0, encZlast = 0, encZmillis = 0; // Storage for encoder states
 
 // Encoder Processing
 // Using direct port reading due to large overhead of digitalRead, speeds up especially in case of high resolution encoders
@@ -142,16 +141,24 @@ void loop() {
 
   // Read turntable buttons
   if( (int32_t)(encZ / ENCODER_SENSITIVITY) - encZlast > 0) {
-    report.buttons |= (uint16_t)1 << 9;
-    report.buttons &= ~((uint16_t)1 << 10);
-    encZlast = (encZ / ENCODER_SENSITIVITY);
-  } else if ( (int32_t)(encX / ENCODER_SENSITIVITY) - encZlast < 0){
-    report.buttons |= (uint16_t)1 << 10;
-    report.buttons &= ~((uint16_t)1 << 9);
-    encZlast = (encZ / ENCODER_SENSITIVITY);
+    if(millis() - encZmillis > ENCODER_Z_MILLIS_TOLERANCE || bitRead(report.buttons,9)) {
+      report.buttons |= (uint16_t)1 << 9;
+      report.buttons &= ~((uint16_t)1 << 10);
+      encZlast = (encZ / ENCODER_SENSITIVITY);
+      encZmillis = millis();
+    }
+  } else if ( (int32_t)(encZ / ENCODER_SENSITIVITY) - encZlast < 0){
+    if(millis() - encZmillis > ENCODER_Z_MILLIS_TOLERANCE || bitRead(report.buttons,10)) {
+      report.buttons |= (uint16_t)1 << 10;
+      report.buttons &= ~((uint16_t)1 << 9);
+      encZlast = (encZ / ENCODER_SENSITIVITY);
+      encZmillis = millis();
+    }
   } else {
-    report.buttons &= ~((uint16_t)1 << 9);
-    report.buttons &= ~((uint16_t)1 << 10);
+    if(millis() - encZmillis > ENCODER_Z_MILLIS_TOLERANCE) {
+      report.buttons &= ~((uint16_t)1 << 9);
+      report.buttons &= ~((uint16_t)1 << 10);
+    }
   }
   
   if(DEBUG_ENABLE) SerialUSB.println(encZlast);
