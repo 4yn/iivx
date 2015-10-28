@@ -116,7 +116,7 @@ iivx.ino uses the following pins:
 |Turntable Enc Channel A|50|
 |Turntable Enc Channel B|51|
 
-![](https://github.com/4yn/iivx/blob/master/img/buttons.png "Button Numbers")
+![](https://raw.githubusercontent.com/4yn/iivx/master/img/buttons.png "Button Numbers")
 
 Button arrangement is up to you and can be changed by modifying the `buttonPins[]` and `ledPins[]` array. If you do change the buttons, be sure to change the constants in lines 178-185 of iivx.ino to correspond to suit your layout.
 
@@ -142,7 +142,7 @@ For turntable, select turntable-left/right and then twist turntable accordingly
 
 ### K-Shoot Mania
 
-![](https://github.com/4yn/iivx/blob/master/img/ksm_options.png "KSM Options")
+![](https://raw.githubusercontent.com/4yn/iivx/master/img/ksm_options.png "KSM Options")
 
 Set Input Type to Analog Stick X/Y and set Signal Sensitivity to a high value (>10)
 
