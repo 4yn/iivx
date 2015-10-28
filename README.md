@@ -98,23 +98,23 @@ Once the custom USB libraries are installed, open iivx.ino and upload to the DUE
 
 iivx.ino uses the following pins:
 
- | Item | Pin | 
- | ----: | :---- | 
- | **Buttons** |  | 
- | Btn 1 LED | 22 | 
- | Btn 1 Switch | 23 | 
- | Btn 2 LED | 24 | 
- | Btn 2 Switch | 25 | 
- | ... | ... | 
- | Btn 9 LED | 38 | 
- | Btn 9 Switch | 39 | 
- | **Encoders** |  | 
- | VOL-L Enc Channel A | 46 | 
- | VOL-L Enc Channel B | 47 | 
- | VOL-R Enc Channel A | 48 | 
- | VOL-R Enc Channel B | 49 | 
- | Turntable Enc Channel A | 50 | 
- | Turntable Enc Channel B | 51 | 
+| Item                    | Pin |
+|-------------------------|-----|
+| **Buttons**             |     |
+| Btn 1 LED               | 22  |
+| Btn 1 Switch            | 23  |
+| Btn 2 LED               | 24  |
+| Btn 2 Switch            | 25  |
+| ...                     | ... |
+| Btn 9 LED               |  38 |
+| Btn 9 Switch            | 39  |
+| **Encoders**            |     |
+| VOL-L Enc Channel A     | 46  |
+| VOL-L Enc Channel B     | 47  |
+| VOL-R Enc Channel A     | 48  |
+| VOL-R Enc Channel B     | 49  |
+| Turntable Enc Channel A | 50  |
+| Turntable Enc Channel B |     |
 
 ![](https://raw.githubusercontent.com/4yn/iivx/master/img/buttons.png "Button Numbers")
 
