@@ -114,7 +114,7 @@ iivx.ino uses the following pins:
 | VOL-R Enc Channel A     | 48  |
 | VOL-R Enc Channel B     | 49  |
 | Turntable Enc Channel A | 50  |
-| Turntable Enc Channel B |     |
+| Turntable Enc Channel B | 51  |
 
 ![](https://raw.githubusercontent.com/4yn/iivx/master/img/buttons.png "Button Numbers")
 
