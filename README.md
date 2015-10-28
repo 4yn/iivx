@@ -58,7 +58,7 @@ Beatmania IIDX and Sound Voltex hybrid controller running on Arduino Due
   - *WARNING: HOLE WAS DRAWN TOO SMALL FOR ENCODER, PLATE REQUIRED EXTRA MACHINING AFTER CNC MANUFACURING, WILL NOT WORK OUT OF THE BOX*
 - Knobs
   - Knobs for VOL-L and VOL-R controls
-  - [2x Aluminum HIFI Knobs, $8 SGD w/o shipping](http://world.taobao.com/item/10341449541.htm?spm=a312a.7700714.0.0.XBrOPF#detail)
+  - [2x Aluminum HIFI Knobs purchased via Taobao, $8 SGD w/o shipping](http://world.taobao.com/item/10341449541.htm?spm=a312a.7700714.0.0.XBrOPF#detail)
   - Uses allen key to tighten, probably a 2-3M one
 - Beams
   - Vertical beams to attach all other plates together
