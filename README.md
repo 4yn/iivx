@@ -2,6 +2,19 @@
 
 Beatmania IIDX and Sound Voltex hybrid controller running on Arduino Due
 
+**Table of Contents**
+
+- [Hardware](#)
+	- [Misc Hardware](#)
+- [Building Materials](#)
+- [Assembly](#)
+- [Software](#)
+- [Wiring](#)
+- [Usage](#)
+	- [Lighting](#)
+	- [Lunatic Rave 2](#)
+	- [K-Shoot Mania](#)
+
 ## Hardware
 
 - Beatmania Buttons x9
