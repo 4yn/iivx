@@ -42,9 +42,10 @@ Beatmania IIDX and Sound Voltex hybrid controller running on Arduino Due
   - High precision encoders require 5v supply in order to function and will output square waves between 5v and 0v, which cannot be directly connected to the board
   - Data wires of each encoder pass through logic level converter to step down voltage, then are connected to the arduino board
   - Low precision encoders (sub 50 ppr) do NOT require a Vcc supply, hence can be read by connecting commmon pin to ground and data pins directly to the arduino board, then enabling the internal pull-up resistors
-  - Alternativelt just use a 10k and 20k resistor to create a voltage divider for each data wire for the encoder
+  - Alternatively just use a 10k and 20k resistor to create a voltage divider for each data wire for the encoder
+  - [2x 4-channel Logic Level shifter from Adafruit, $10 SGD w/o shipping](https://www.adafruit.com/products/757)
 
-# Building Materials
+## Building Materials
 
 - Main mounting plate
   - Comprises
@@ -63,7 +64,7 @@ Beatmania IIDX and Sound Voltex hybrid controller running on Arduino Due
 - Beams
   - Vertical beams to attach all other plates together
   - Similar design to 2020 extrusion for easy mounting of plates vertically
-  - 3d printed, files available in /skp/(/skp/) directory
+  - 3d printed, files available in [/skp/](/skp/) directory
   - Originally intended to have 6 beams, 3d printer malfunctioned halfway,
 - Miscallaneous Plates
   - Extra plates, cut out of 5mm thick foam board. Other materials can be substituted
@@ -73,9 +74,78 @@ Beatmania IIDX and Sound Voltex hybrid controller running on Arduino Due
 - Screws
   - 8x 4M self-tapping screws to attach main plate and bottom plate to beams
   - 9x 3M 12mm screws to mount rotary encoders
+- Velcro/Dual-lock tape
+  - Attach DUE to bottom plate, but remains detachable
+
+## Assembly
+
+1. Insert button through main plate and lock down with plastic nut
+2. Wire buttons to breadboard
+3. Screw on rotary encoders
+4. Wire encoders to breadboard, including logic level shifter circuit
+4. Screw on beams to main plate and then screw on bottom plate
+5. Stick breadboard onto bottom plate using adhesive
+6. Stick DUE onto bottom plate using velcro tape
+7. Detach two beams and insert side plates, then reattach
 
 ## Software
 
-The arduino DUE works out of the box with mouse and keyboard functionality, and modifying the USB core libraries allows modifications to how the DUE behaves as a HID object. Modified core library files are found at /lib/USB/, replaces the files located at AppData\Local\Arduino15\packages\arduino\hardware\sam\1.6.4\cores\arduino\USB
+The arduino DUE works out of the box with mouse and keyboard functionality, and modifying the USB core libraries allows modifications to how the DUE behaves as a HID object. Modified core library files are found at [/lib/USB/](/lib/usb/), replaces the files located at {APPDATA}\Local\Arduino15\packages\arduino\hardware\sam\1.6.4\cores\arduino\USB. Unmodified files are located at [/lib/USB backup/](/lib/USB%20backup/) to revert to keyboard and mouse functionality. This file implements a custom HID descriptor as well as methods to use said descriptor, allowing the DUE to be recognised as a "Game Pad" with 15 buttons, 3 analog axis and 11 Generic Indicators.
+
+Once the custom USB libraries are installed, open iivx.ino and upload to the DUE.
+
+## Wiring
+
+iivx.ino uses the following pins:
+
+|Item|Pin|
+|-:|:-|
+|**Buttons**||
+|Btn 1 LED|22|
+|Btn 1 Switch|23|
+|Btn 2 LED|24|
+|Btn 2 Switch|25|
+|...|...|
+|Btn 9 LED|38|
+|Btn 9 Switch|39|
+|**Encoders**||
+|VOL-L Enc Channel A|46|
+|VOL-L Enc Channel B|47|
+|VOL-R Enc Channel A|48|
+|VOL-R Enc Channel B|49|
+|Turntable Enc Channel A|50|
+|Turntable Enc Channel B|51|
+
+![](https://github.com/4yn/iivx/blob/master/img/buttons.png "Button Numbers")
+
+Button arrangement is up to you and can be changed by modifying the `buttonPins[]` and `ledPins[]` array. If you do change the buttons, be sure to change the constants in lines 178-185 of iivx.ino to correspond to suit your layout.
+
+Getting the encoder arrangement correct is slightly more important. The encoder connected to pins 50 and 51 are given extra functionality in that clockwise and counter-clockwise rotation will trigger button presses on buttons 10 and 11, for use in bindings for Lunatic Rave 2. Additionally, changing the encoder pins requires not only changing the pin numbers in the `#define` lines, but also requires lookup on the exact register of the pin value. Reason being since the program accounts for high-resolution encoders, reading encoder state via digitalRead() has too much overhead which may result in dropped input from either encoder, whereas reading from the pin's memory address is much faster. Pins 64 to 51 all occupy the `PIOC` port on the DUE and the B channels corrsepond to the 16th, 14th and 12th bit of the PIOC memory value.
+
+In order to change the pins the encoders are connected to, look up the exact port and bit that the pin corresponds to [here](http://www.robgray.com/temp/Due-pinout.svg). Change the pin numbers in `#define` as well as the `ENCODER_?_B_REGISTER` values.
+
+## Usage
+
+### Lighting
+
+Press buttons 2, 6, 8 and 9 simultaneously, then finally press button
+
+- 1 to disable LEDs
+- 3 to enable reactive lighting, where pressing a button will light the corresponding LED
+- 5 to enable HID lighting.
+
+### Lunatic Rave 2
+
+For buttons, bind as normal
+
+For turntable, select turntable-left/right and then twist turntable accordingly
+
+### K-Shoot Mania
+
+![](https://github.com/4yn/iivx/blob/master/img/ksm_options.png "KSM Options")
+
+Set Input Type to Analog Stick X/Y and set Signal Sensitivity to a high value (>10)
+
+
 
 TODO: In-Program Documentation
