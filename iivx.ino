@@ -140,14 +140,14 @@ void loop() {
   report.zAxis = (uint8_t)((int32_t)(encZ / ENCODER_SENSITIVITY) % 256);
 
   // Read turntable buttons
-  if( (int32_t)(encZ / ENCODER_SENSITIVITY) - encZlast > 0) {
+  if( (int32_t)(encZ / ENCODER_SENSITIVITY) - encZlast > 5) {
     if(millis() - encZmillis > ENCODER_Z_MILLIS_TOLERANCE || bitRead(report.buttons,9)) {
       report.buttons |= (uint16_t)1 << 9;
       report.buttons &= ~((uint16_t)1 << 10);
       encZlast = (encZ / ENCODER_SENSITIVITY);
       encZmillis = millis();
     }
-  } else if ( (int32_t)(encZ / ENCODER_SENSITIVITY) - encZlast < 0){
+  } else if ( (int32_t)(encZ / ENCODER_SENSITIVITY) - encZlast < -5){
     if(millis() - encZmillis > ENCODER_Z_MILLIS_TOLERANCE || bitRead(report.buttons,10)) {
       report.buttons |= (uint16_t)1 << 10;
       report.buttons &= ~((uint16_t)1 << 9);
