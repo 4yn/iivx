@@ -99,7 +99,7 @@ Once the custom USB libraries are installed, open iivx.ino and upload to the DUE
 iivx.ino uses the following pins:
 
  | Item | Pin | 
- | -: | :- | 
+ | ----: | :---- | 
  | **Buttons** |  | 
  | Btn 1 LED | 22 | 
  | Btn 1 Switch | 23 | 
