@@ -51,7 +51,7 @@ Beatmania IIDX and Sound Voltex hybrid controller running on Arduino Due
     - Holes for encoder shaft + screw holes to mount encoder
     - Holes for buttons
     - Holes for mounting other plates
-  - CAD files are in /cad/final/ directory, file name "plate"
+  - CAD files are in [/cad/final/](/tree/master/cad/final/) directory, file name "plate"
 - Turntable
   - Round plate with hole in middle to fit rotary encoder shaft
   - Cad files are in /cad/final/ directory, file name "ring"
@@ -63,7 +63,7 @@ Beatmania IIDX and Sound Voltex hybrid controller running on Arduino Due
 - Beams
   - Vertical beams to attach all other plates together
   - Similar design to 2020 extrusion for easy mounting of plates vertically
-  - 3d printed, files available in /skp/ directory
+  - 3d printed, files available in /skp/(/tree/master/skp/) directory
   - Originally intended to have 6 beams, 3d printer malfunctioned halfway,
 - Miscallaneous Plates
   - Extra plates, cut out of 5mm thick foam board. Other materials can be substituted
@@ -73,5 +73,9 @@ Beatmania IIDX and Sound Voltex hybrid controller running on Arduino Due
 - Screws
   - 8x 4M self-tapping screws to attach main plate and bottom plate to beams
   - 9x 3M 12mm screws to mount rotary encoders
+
+## Software
+
+The arduino DUE works out of the box with mouse and keyboard functionality, and modifying the USB core libraries allows modifications to how the DUE behaves as a HID object. Modified core library files are found at /lib/USB/, replaces the files located at AppData\Local\Arduino15\packages\arduino\hardware\sam\1.6.4\cores\arduino\USB
 
 TODO: In-Program Documentation
