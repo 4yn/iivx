@@ -51,7 +51,7 @@ Beatmania IIDX and Sound Voltex hybrid controller running on Arduino Due
     - Holes for encoder shaft + screw holes to mount encoder
     - Holes for buttons
     - Holes for mounting other plates
-  - CAD files are in [/cad/final/](/tree/master/cad/final/) directory, file name "plate"
+  - CAD files are in [/cad/final/](/master/cad/final/) directory, file name "plate"
 - Turntable
   - Round plate with hole in middle to fit rotary encoder shaft
   - Cad files are in /cad/final/ directory, file name "ring"
@@ -63,7 +63,7 @@ Beatmania IIDX and Sound Voltex hybrid controller running on Arduino Due
 - Beams
   - Vertical beams to attach all other plates together
   - Similar design to 2020 extrusion for easy mounting of plates vertically
-  - 3d printed, files available in /skp/(/tree/master/skp/) directory
+  - 3d printed, files available in /skp/(/master/skp/) directory
   - Originally intended to have 6 beams, 3d printer malfunctioned halfway,
 - Miscallaneous Plates
   - Extra plates, cut out of 5mm thick foam board. Other materials can be substituted
