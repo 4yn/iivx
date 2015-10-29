@@ -2,6 +2,8 @@
 
 Beatmania IIDX and Sound Voltex hybrid controller running on Arduino Due
 
+Imgur album: http://imgur.com/a/iJoK6
+
 ## Hardware
 
 - Beatmania Buttons x9
@@ -146,6 +148,6 @@ For turntable, select turntable-left/right and then twist turntable accordingly
 
 Set Input Type to Analog Stick X/Y and set Signal Sensitivity to a high value (>10)
 
-
+Test KSM play: https://youtu.be/374v2gmAJd4
 
 TODO: In-Program Documentation
