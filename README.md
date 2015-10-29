@@ -148,6 +148,6 @@ For turntable, select turntable-left/right and then twist turntable accordingly
 
 Set Input Type to Analog Stick X/Y and set Signal Sensitivity to a high value (>10)
 
-
+Test KSM play: https://youtu.be/374v2gmAJd4
 
 TODO: In-Program Documentation
