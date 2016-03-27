@@ -4,6 +4,8 @@ Beatmania IIDX and Sound Voltex hybrid controller running on Arduino Due
 
 Imgur album: http://imgur.com/a/iJoK6
 
+Targets sam_core 1.6.5?
+
 ## Hardware
 
 - Beatmania Buttons x9
