@@ -66,6 +66,10 @@ void loop() {
       lightMode = 0;
     } else if (report.buttons == 4){
       lightMode = 1;
+    } else if (report.buttons == 16){
+      report.buttons = (uint16_t)1 << 9;
+    } else if (report.buttons == 64){
+      report.buttons = (uint16_t)1 << 10;
     }
   }
   // Send report and delay
