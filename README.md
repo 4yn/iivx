@@ -4,7 +4,9 @@ Beatmania IIDX and Sound Voltex hybrid controller running on Arduino Due
 
 Imgur album: http://imgur.com/a/iJoK6
 
-Targets sam_core 1.6.5?
+Arduino DUE code targets arduino ver 1.6.4, 1.6.5 onwards added pluggable HID which breaks the SAM libraries
+
+Arduino Leonardo code in /leoo/ targets arduino ver 1.6.8 but should work with versions upward of 1.6.5. /leoo/leoo/ contains code for 9 key + 9 led pnm controller, /leoo/leovx/ contains code for 7 key + 2 lq encoder (<=50ppr) voltex controller, /leoo/leohq/ contains code for 7 key + 2 hq encoder (>=50ppr) volltex controller.
 
 ## Hardware
 
