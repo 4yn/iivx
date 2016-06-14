@@ -53,7 +53,7 @@ void doEncR(){
   if((ENCODER_PORT >> ENC_R_B_ADDR)&1){
     encR++;
   } else {
-    encL--;
+    encR--;
   }
 }
 
