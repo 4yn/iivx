@@ -29,17 +29,18 @@ uint8_t buttonPins[] = {13,18,19,20,21,22,23};
 uint8_t sysPin = 5;
 int32_t encL=0, encR=0;
 /* current pin layout
- *  pins 1 to 9 = LED 1 to 9
+ *  pins 6 to 12 = LED 1 to 7
  *    connect pin to + termnial of LED
  *    connect ground to resistor and then - terminal of LED
- *  pins 11 to 13, A0 to A5 = Button input 1 to 9
+ *  pins 13, A0 to A5 = Button input 1 to 7
  *    connect button pin to ground to trigger button press
- *  pins 0 = system pin
- *    connect system pin to ground 
- *      together with other buttons to change lighting scheme
+ *  pins 5 = system pin
+ *    connect system pin to ground with a small button
+ *      press together with other buttons to change lighting scheme
  *    system button + button 1 = reactive lighting
  *    system button + button 3 = HID lighting
  */
+ 
 
 void doEncL(){
   if((ENCODER_PORT >> ENC_L_B_ADDR)&1){

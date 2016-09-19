@@ -15,17 +15,18 @@ uint8_t lightMode = 1;
 uint8_t buttonPins[] = {13,18,19,20,21,22,23};
 uint8_t ledPins[] = {6,7,8,9,10,11,12};
 /* current pin layout
- *  pins 1 to 9 = LED 1 to 9
+ *  pins 6 to 12 = LED 1 to 7
  *    connect pin to + termnial of LED
  *    connect ground to resistor and then - terminal of LED
- *  pins 11 to 13, A0 to A5 = Button input 1 to 9
+ *  pins 13, A0 to A5 = Button input 1 to 7
  *    connect button pin to ground to trigger button press
- *  pins 0 = system pin
- *    connect system pin to ground 
- *      together with other buttons to change lighting scheme
+ *  pins 5 = system pin
+ *    connect system pin to ground with a small button
+ *      press together with other buttons to change lighting scheme
  *    system button + button 1 = reactive lighting
  *    system button + button 3 = HID lighting
  */
+ 
 #define ENCODER_SENSITIVITY (double) 6.25
 // encoder sensitivity = number of positions per rotation times 4 (400*4) / number of positions for HID report (256)
 Encoder encL(0,1), encR(2,3);

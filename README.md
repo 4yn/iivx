@@ -8,6 +8,18 @@ Arduino DUE code targets arduino ver 1.6.4, 1.6.5 onwards added pluggable HID wh
 
 Arduino Leonardo code in /leoo/ targets arduino ver 1.6.8 but should work with versions upward of 1.6.5. /leoo/leoo/ contains code for 9 key + 9 led pnm controller, /leoo/leovx/ contains code for 7 key + 2 lq encoder (<=50ppr) voltex controller, /leoo/leohq/ contains code for 7 key + 2 hq encoder (>=50ppr) volltex controller.
 
+## Variations
+
+For a controller for both Lunatic Rave 2 and K-shoot mania at once (as seen in the youtube video), use a arduino DUE. Download the SAM core with version 1.6.4 and setup as seen in the Software section.
+
+If you rather use a leonardo, you have 3 options:
+
+- Controller with 9 buttons and 9 LEDs as seen in /leoo/leoo/
+- Controller with 7 buttons and 2 low quality encoders as seen in /leoo/leovx/
+- Controller with 7 buttons and 2 high quality encoders as seen in /leoo/leovxhq/
+
+Just open the .ino file with the latest arudino version and download.
+
 ## Hardware
 
 - Beatmania Buttons x9
