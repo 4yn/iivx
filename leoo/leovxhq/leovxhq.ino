@@ -29,11 +29,7 @@ uint8_t buttonPins[] = {13,18,19,20,21,22,23};
 uint8_t sysPin = 5;
 uint8_t reactiveLightPin = 21;
 uint8_t hidLightPin = 22;
-<<<<<<< HEAD
 uint8_t sysInputPins[] = {13,18,19,20};
-=======
-uint8_t sysInputPins[] = {31,18,19,20};
->>>>>>> dad206bb9614a3f4038677e71baf4dfabc13632d
 int32_t encL=0, encR=0;
 /* current pin layout
  *  pins 6 to 12 = LED 1 to 7
