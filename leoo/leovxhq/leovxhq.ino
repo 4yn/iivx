@@ -113,7 +113,7 @@ void loop() {
       if(digitalRead(sysInputPins[i])!=HIGH){
         report.buttons |= (uint16_t)1 << (i+buttonCount);
       } else {
-        report.buttons &= ~((uint16_t)1 << (i+buttonCount);
+        report.buttons &= ~((uint16_t)1 << (i+buttonCount));
       }
     }
     if(digitalRead(reactiveLightPin)!=HIGH){
