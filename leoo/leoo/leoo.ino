@@ -25,7 +25,7 @@ uint8_t sysPin = 0;
  *    system button + button 3 = HID lighting
  */
 
-void lights(uint8_t lightDesc){
+void lights(uint16_t lightDesc){
   for(int i=0;i<buttonCount;i++){
      if((lightDesc>>i)&1){
          digitalWrite(ledPins[i],HIGH);
@@ -67,11 +67,18 @@ void loop() {
     } else if (report.buttons == 4){
       lightMode = 1;
     } else if (report.buttons == 16){
+      report.buttons = 0;
       report.buttons = (uint16_t)1 << 9;
     } else if (report.buttons == 64){
+      report.buttons = 0;
       report.buttons = (uint16_t)1 << 10;
+    } else {
+      report.buttons = 0;
     }
-  }
+  } else {
+    report.buttons &= ~((uint16_t)1 << 9);
+    report.buttons &= ~((uint16_t)1 << 10);
+}
   // Send report and delay
   iivx.setState(&report);
   delayMicroseconds(REPORT_DELAY);
