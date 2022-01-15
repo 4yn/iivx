@@ -1,5 +1,23 @@
 # iivx
 
+> **Update 2022**
+> 
+> _Wow_ it's been a while.
+> 
+> Its been a bit over 6 years (maybe more by the time you're reading this) since I made this controller and the
+> build log below. That also means there's that many years worth of newer projects and code out there for building
+> music game controllers. Just to make it very clear, **most (if not all) of the code in this repository is outdated**
+> and I highly recommend looking at some better/newer resources (code and build logs) if you are planning to try a
+> similar project:
+>
+> - https://consandstuff.github.io/ (active community, especially recommend checking out the discord)
+> - https://github.com/knuckleslee/RhythmCodes (will _probably_ work right out of the box)
+> - https://rhythm-cons.wiki/w/Controller_Code (general purpose rhythm game controller code)
+> - https://github.com/MHeironimus/ArduinoJoystickLibrary/ (general purpose joysticks code
+> - https://github.com/speedypotato/Pico-Game-Controller (for the Pi Pico, I personally bought one)
+>
+> I'm glad that many people have found this repository useful. Keep making cool stuff!
+
 Beatmania IIDX and Sound Voltex hybrid controller running on Arduino Due
 
 Imgur album: http://imgur.com/a/iJoK6
